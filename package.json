@@ -1,0 +1,12 @@
+{
+  "name": "tcpsim-logic",
+  "version": "1.0.0",
+  "description": "Interface to tcp simulator logic",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test",
+    "start": "start"
+  },
+  "author": "alberto-aguado3",
+  "license": "ISC"
+}
