@@ -1,0 +1,262 @@
+@startuml
+
+title Data model - Class Diagram
+
+
+skinparam componentStyle uml2
+
+class Simulation {
+  .. Fields ..
+-peerA Peer
+-peerB Peer
+-channel Channel
+-simulationTime Time
+-eventQueue EventQueue
+
+  .. Methods ..
++Simulation(config ?SimulationConfig)
++startSimulation(passivePeer, activePeer)
++nextEvent()
+
+-currentTime(): Time
+}
+
+class SimulationConfig {
+  .. Fields ..
+mss
+lossPercent
+dataFromA
+dataFromB
+bufAcapacity
+bufBcapacity
+rtt
+rto
+
+tProcesamiento
+tBeforeTransmit
+//tProces < tBeforeTransm < 500ms
+}
+
+class Channel {
+  .. Fields ..
++lossPercent
++rtt
+
+  .. Methods ..
++deliverSegment() //routing, loss...
+}
+
+class EventQueue {
+  .. Fields ..
++events []Event
+
+  .. Methods ..
++getNextEvent()
+-sortEvents()
+}
+
+together {
+  interface Event {
+    .. Fields ..
+  +executionTime Time
+  
+    .. Methods ..
+  +execute()
+  }
+  
+  class EventSend {
+    .. Fields ..
+  +sender
+  +receiver
+  +segment Segment
+  
+    .. Methods ..
+  +EventSend(src, dst, segment)
+  +execute()
+  }
+  
+  class EventReceive {
+    .. Fields ..
+  +sender
+  +receiver
+  +segment Segment
+  
+    .. Methods ..
+  +EventReceive(segment Segment)
+  +execute()
+  }
+  
+  class EventTimeout {
+    .. Fields ..
+  +sender
+  +receiverc
+
+    .. Methods ..
+  +EventTimeout(...)
+  +execute()
+  }
+}
+
+class Peer {
+  .. Fields ..
++ctrlBlock TransmissionControlBlock
++sendBuffer Buffer
++receiveBuffer Buffer
+
+  .. Methods ..
++sendSegment(): Event
++receiveSegment(segment Segment)
+}
+
+class Buffer {
+  .. Fields ..
+-data []char
+  
+  .. Methods ..
++getContent() []string
++store(data string)
+}
+
+class Application {
+  .. Fields ..
+-dataToSend string
+-dataReceived
+
+-port???
+
+  .. Methods ..
++...tcp user interface???
++open
++close
++send //put to send buffer
+}
+
+class Segment {
+  .. Fields ..
+-header SegmentHeader
+-payload []str
+
+  .. Methods ..
++Segment(header, payload) Segment
++payload() []str
++controlBits() ControlBits
++seqNumber() number
++ackNumber() number
++announcedWndw() number
+}
+
+class SegmentHeader {
+  .. Fields ..
+-seqNumber number
+-ackNumber number
+-controlBits ControlBits
+-announcedWndw number --positive
+
+sourcePort
+destinationPort
+checksum
+dataOffset
+urgentPointer
+
+  .. Methods ..
++SegmentHeader(seq, ack, ctrl, wndw) SegmentHeader
+}
+
+class ControlBits {
+  .. Fields ..
+-ACK
+-SYN
+-RST
+-FIN
+
+PSH
+CWR //congestion window reduced
+ECE //Explicit Congestion notification - echo
+URG //urgent
+  .. Methods ..
++ControlBits() ControlBits
++BitAck() bool
++BitSyn() bool
++BitFin() boolc
++BitRst() bool
++SetAck(state bool) void
++SetSyn(state bool) void
++SetFin(state bool) void
++SetRst(state bool) void
+}
+
+enum ConnectionState {
+  .. Enum values ..
++LISTEN
++SYN-SENT
++SYN-RECEIVED
++ESTABLISHED
++FIN-WAIT1
++FIN-WAIT2
++CLOSE-WAIT
++CLOSING
++LAST-ACK
++TIME-WAIT
++CLOSED
+}
+
+entity TransmissionControlBlock {
+  .. Fields ..
++sendVariables SendSequenceVariable
++recvVariables ReceiveSequenceVariable
++connState ConnectionState
+
+ipSrc
+ipDst
+portSrc
+portDst
+ipSecLevel
+rcvBufferPointer
+sndBufferPointer
+currentSegmentPointer
+retransmitQueuePointer
+}
+ 
+entity SendSequenceVariable {
++snd.una
++snd.nxt
++snd.wnd
++snd.wl1
++snd.wl2
++iss
+
+snd.up
+}
+
+entity ReceiveSequenceVariable {
++rcv.nxt
++rcv.wnd
++irs
+
+rcv.up
+}
+
+Segment  "1" *-- "1" SegmentHeader
+SegmentHeader -- ControlBits
+
+TransmissionControlBlock -- ReceiveSequenceVariable
+TransmissionControlBlock -- SendSequenceVariable
+TransmissionControlBlock -- ConnectionState
+
+Peer "1" *-- "1" TransmissionControlBlock
+Peer "1" o-- "many" Segment : creates & receives
+Peer -right- Buffer
+Peer -- Application
+
+Simulation "1" *-- "2" Peer
+Simulation "1" *-- "1" Channel
+Simulation "1" *-- "1" EventQueue
+Simulation o-- SimulationConfig
+
+EventQueue "1" *-- "many" Event
+Event <|-- EventSend
+Event <|-- EventReceive
+Event <|-- EventTimeout
+
+
+@enduml
