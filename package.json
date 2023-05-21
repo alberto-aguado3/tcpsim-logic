@@ -2,7 +2,7 @@
   "name": "tcpsim-logic",
   "version": "1.1.1",
   "description": "Interface to tcp simulator logic",
-  "exports": "./src/",
+  "exports": "./dist/",
   "main": "dist/main.js",
   "files": [
     "dist"
