@@ -1,16 +1,20 @@
 {
-    "compilerOptions": {
-      "outDir": "dist",
-      "target": "ES2015",
-      "module": "commonjs",
-      "strict": true,
-      "watch": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts", "docs"],
-    
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "display": "Recommended"
-  }
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ES2015",
+    "module": "es6",
+    "strict": true,
+    "watch": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "src/main.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts", "docs"],
+  
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended"
+
+  
+}
