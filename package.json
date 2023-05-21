@@ -5,10 +5,8 @@
   "exports": {
     ".": "./src"
   },
-  "main": "dist/main.js",
-  "files": [
-    "dist"
-  ],
+  "main": "src/index.ts",
+
   "scripts": {
     "test": "jest",
     "start": "start",
