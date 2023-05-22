@@ -18,7 +18,10 @@
   },
   "author": "alberto-aguado3",
   "license": "ISC",
-  "type": "module",
+
+  
+
+
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
