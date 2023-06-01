@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "./dist",
+    "rootDir": "./src",
+
     "target": "ES2015",
     "module": "es6",
     "strict": true,
-    "watch": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,

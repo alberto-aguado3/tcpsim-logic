@@ -1,7 +1,6 @@
 import { Peer } from "../peer";
 import { Segment } from "../segment";
 import { SimEventType, SimulationEvent } from "./event";
-import {inspect} from "util";
 
 export class EventReceive extends SimulationEvent {
     private _receiver: Peer;

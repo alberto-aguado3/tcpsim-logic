@@ -5,7 +5,6 @@ import { Endpoint } from "../endpoint";
 import { Peer } from "../peer";
 import { State } from "./state";
 import { StateEstablished } from "./state-established";
-import {inspect} from "util";
 
 
 export class StateSynSent extends State {

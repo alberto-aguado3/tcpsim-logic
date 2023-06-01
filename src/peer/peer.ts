@@ -11,7 +11,6 @@ import { Endpoint } from "./endpoint";
 import { Log, Observer } from "../utils";
 import { Congestion } from "./congestion-constants";
 import { Channel } from "../channel";
-import {inspect} from "util";
 import { SimLogger } from "../simulation/logger";
 
 export class Peer implements Observer{
@@ -196,12 +195,12 @@ export class Peer implements Observer{
         }
 
         //DEBUG
-        console.log(`Soy ${this.ctrlBlock.srcEndpoint.ip}, state=${ConnectionState[this.ctrlBlock.connState]}. Received segment: `, inspect(segment));
+        console.log(`Soy ${this.ctrlBlock.srcEndpoint.ip}, state=${ConnectionState[this.ctrlBlock.connState]}. Received segment: `, (segment));
 
         const err = this._connState.processSegmentForReceiving(segment);
         if (err !== null) {
             //log error. Revisar si otros sí pueden generar EventRespondAfterGuard, y qué hacer en esos casos
-            console.log("Error: ", inspect(err));
+            console.log("Error: ", (err));
         }
         
     }

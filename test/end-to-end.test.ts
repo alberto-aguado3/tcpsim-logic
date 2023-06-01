@@ -1,5 +1,4 @@
 import {SimConfig, PeerConfig, ChannelConfig, Simulation} from "../src/simulation";
-import {inspect} from "util";
 import { ConnectionState } from "../src/peer/connection-state";
 
 describe("end-to-end tests, ensuring data is transfered", () => {

@@ -1,13 +1,10 @@
-import { EventCloseConn, EventPutToChannel, EventRespondAfterGuard, EventTimeout } from "../../event";
 import { SimEventType, SimulationEvent } from "../../event/event";
 import { Segment, SegmentHeader } from "../../segment";
 import { ConnectionState } from "../connection-state";
 import { Endpoint } from "../endpoint";
-import { Peer } from "../peer";
 import { State } from "./state";
 import { StateCloseWait } from "./state-close-wait";
 import { StateFinWait1 } from "./state-fin-wait1";
-import {inspect} from "util";
 
 
 

@@ -1,11 +1,9 @@
-import { EventCloseConn, EventPutToChannel, EventRespondAfterGuard, SimEventType } from "../../event";
+import { SimEventType } from "../../event";
 import { Segment, SegmentHeader } from "../../segment";
 import { ConnectionState } from "../connection-state";
 import { Endpoint } from "../endpoint";
-import { Peer } from "../peer";
 import { State } from "./state";
 import { StateEstablished } from "./state-established";
-import {inspect} from "util";
 
 
 export class StateSynReceived extends State {
