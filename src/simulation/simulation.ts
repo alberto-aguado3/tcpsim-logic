@@ -55,15 +55,15 @@ export class Simulation {
         this._passivePeer.logger = this._logger;
     }
 
-    public get ActivePeer(): Peer {
+    public getActivePeer(): Peer {
         return this._activePeer;
     }
 
-    public get PassivePeer(): Peer {
+    public getPassivePeer(): Peer {
         return this._passivePeer;
     }
 
-    public get Channel(): Channel {
+    public getChannel(): Channel {
         return this._channel;
     }
 
