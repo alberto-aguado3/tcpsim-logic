@@ -60,7 +60,7 @@ export class StateEstablished extends State {
         //console.log("this.context.application.dataToSend.length === 0? dataToSend:", this.context.application.dataToSend);
         //console.log("this.context.ctrlBlock.sender.sndNxt === this.context.sendBuffer.firstEmptyCell()?", `${this.context.ctrlBlock.sender.sndNxt} === ${this.context.sendBuffer.firstEmptyCell()}`);
         //console.log("contenido buffer envio: ", inspect(this.context.sendBuffer), "y recibido: ", inspect(this.context.rec));
-        if (this.context.application.dataToSend.length === 0 && this.context.ctrlBlock.sender.sndNxt === this.context.sendBuffer.firstEmptyCell()) {
+        if (this.context.application.getDataToSend().length === 0 && this.context.ctrlBlock.sender.sndNxt === this.context.sendBuffer.firstEmptyCell()) {
             this.context.transitionTo(new StateFinWait1());
             segmentsToSend.at(-1)?.withFin();
         }

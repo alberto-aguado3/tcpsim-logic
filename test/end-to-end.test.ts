@@ -55,7 +55,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -109,8 +109,8 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
-        expect(simulator["_activePeer"].application.dataReceived).toEqual(passiveCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator["_activePeer"].application.getDataReceived()).toEqual(passiveCfg.applicationData);
 
     });
 
@@ -165,7 +165,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -220,7 +220,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -274,8 +274,8 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
-        expect(simulator["_activePeer"].application.dataReceived).toEqual(passiveCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator["_activePeer"].application.getDataReceived()).toEqual(passiveCfg.applicationData);
 
     });
 
@@ -357,7 +357,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.dataReceived).toEqual(activeCfg.applicationData);
+        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
         //expect(simulator["_activePeer"].application.dataReceived).toEqual(passiveCfg.applicationData);
 
     });

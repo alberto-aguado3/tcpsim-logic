@@ -6,16 +6,16 @@ export class Application {
 
     constructor(){}
 
-    public get dataToSend(): string {
+    public getDataToSend(): string {
         return this._dataToSend;
     }
 
-    public get dataReceived(): string {
+    public getDataReceived(): string {
         return this._dataReceived;
     }
 
     public queueDataToSend(data: string) {
-        this._dataToSend = this.dataToSend + data;
+        this._dataToSend = this._dataToSend + data;
     }
 
     public retrieveNextNBytesToSend(bytes: number): string[] {

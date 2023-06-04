@@ -57,7 +57,7 @@ export class StateCloseWait extends State {
         }
 
         //custom implementation: start connection close if no more application bytes to send
-        if (this.context.application.dataToSend.length === 0 && this.context.ctrlBlock.sender.sndNxt === this.context.sendBuffer.firstEmptyCell()) {
+        if (this.context.application.getDataToSend().length === 0 && this.context.ctrlBlock.sender.sndNxt === this.context.sendBuffer.firstEmptyCell()) {
             this.context.transitionTo(new StateLastAck());
             segmentsToSend.at(-1)?.withFin();
         }

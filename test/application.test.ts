@@ -10,7 +10,7 @@ describe("application reading and writing", ()=> {
             
             application.queueDataToSend(data);
 
-            expect(application.dataToSend).toEqual(expected);
+            expect(application.getDataToSend()).toEqual(expected);
         });
 
         test("reading first n bytes", () => {
@@ -19,7 +19,7 @@ describe("application reading and writing", ()=> {
             application.queueDataToSend(data);
             application.retrieveNextNBytesToSend(n);
 
-            expect(application.dataToSend).toEqual(expectedAfterRead);
+            expect(application.getDataToSend()).toEqual(expectedAfterRead);
         });
     });
 
@@ -33,7 +33,7 @@ describe("application reading and writing", ()=> {
 
             application.writeBytesReceived(toWrite);
 
-            expect(application.dataReceived).toEqual(expected);
+            expect(application.getDataReceived()).toEqual(expected);
         });
     });
 });
