@@ -48,6 +48,10 @@ export class DataBuffer {
         return this._data;
     }
 
+    public offset(): number {
+        return this._dataOffset;
+    }
+
     public readChunk(start: number, cells: number): string[] {
         const buffIndex = this.removeOffsetToNumber(start);
 
