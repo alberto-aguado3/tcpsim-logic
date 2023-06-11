@@ -44,6 +44,7 @@ export class DataBuffer {
         return res;
     }
 
+    //TODO: remove these two methods (offet() removed 100% sure)
     public dumpContent(): BufferCell[] {
         return this._data;
     }
