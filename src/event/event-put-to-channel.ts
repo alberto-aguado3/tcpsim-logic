@@ -24,6 +24,7 @@ export class EventPutToChannel extends SimulationEvent { //implements Observer {
         
         const segmentMaybeLost: Segment|null = this._channel.applyLossEffect(this._segmentDelivered);
         if (segmentMaybeLost === null) {
+            this._channel.addLostSegment(this._segmentDelivered, this._executionTime);
             return;
         }
 
@@ -38,11 +39,7 @@ export class EventPutToChannel extends SimulationEvent { //implements Observer {
         }
 
         this._channel.events.insertEvent(new EventReceive(new Date(arrivalTime), this._segmentDelivered, destinationPeer));
+        this._channel.addDeliveredSegment(this._segmentDelivered, this._executionTime);
     }
 
-    /*
-    public update(simTime: Date): void {
-        this._absSimulationTime = simTime;
-    }
-    */
 }

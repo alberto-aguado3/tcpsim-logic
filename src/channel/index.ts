@@ -1,1 +1,1 @@
-export {Channel} from "./channel";
+export {Channel, SegmentWithTimestamp} from "./channel";

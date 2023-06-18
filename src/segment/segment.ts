@@ -1,13 +1,16 @@
 import { Endpoint } from "../peer/endpoint";
 import { SegmentHeader } from "./segment-header";
+import { v4 as uuidv4 } from "uuid";
 
 export class Segment {
     private _header: SegmentHeader;
     private _payload: string[];
+    public readonly id: string;
 
     constructor(header: SegmentHeader, payload: string[]) {
         this._header = header;
         this._payload = payload;
+        this.id = uuidv4();
     }
 
     public withSynEstablishment(): void {

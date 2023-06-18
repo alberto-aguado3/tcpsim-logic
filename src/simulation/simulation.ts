@@ -8,9 +8,9 @@ import { SimConfig } from "./simulation-config";
 import { TimeNotifier } from "./time-notifier";
 
 export class Simulation {
-    private _activePeer: Peer;
-    private _passivePeer: Peer;
-    private _channel: Channel;
+    public readonly activePeer: Peer;
+    public readonly passivePeer: Peer;
+    public readonly channel: Channel;
     private _simulationClock: TimeNotifier = new TimeNotifier(new Date(0));
     private _logger: SimLogger = new SimLogger();
 
@@ -24,7 +24,7 @@ export class Simulation {
             setReceptionBufferCapacity(cfg.active.recvBuffCapacity).
             setTimeToProcessSegment(cfg.active.timeToProcessSegment).
             setTimeGuardBeforeTransmitting(cfg.active.timeGuardBeforeTransmitting);
-        this._activePeer = activePeerBuilder.buildActivePeer();
+        this.activePeer = activePeerBuilder.buildActivePeer();
 
         let passivePeerBuilder: PeerBuilder = new PeerBuilder().
             setSourceAddr(cfg.passive.endpoint).
@@ -34,50 +34,39 @@ export class Simulation {
             setReceptionBufferCapacity(cfg.passive.recvBuffCapacity).
             setTimeToProcessSegment(cfg.passive.timeToProcessSegment).
             setTimeGuardBeforeTransmitting(cfg.passive.timeGuardBeforeTransmitting);
-        this._passivePeer = passivePeerBuilder.buildPassivePeer();
+        this.passivePeer = passivePeerBuilder.buildPassivePeer();
 
         if (cfg.active.applicationData !== undefined) {
-            this._activePeer.application.queueDataToSend(cfg.active.applicationData);
+            this.activePeer.application.queueDataToSend(cfg.active.applicationData);
         }
         if (cfg.passive.applicationData !== undefined) {
-            this._passivePeer.application.queueDataToSend(cfg.passive.applicationData);
+            this.passivePeer.application.queueDataToSend(cfg.passive.applicationData);
         }
 
-        this._activePeer.setRemoteHost(this._passivePeer.ctrlBlock.srcEndpoint);
-        this._passivePeer.setRemoteHost(this._activePeer.ctrlBlock.srcEndpoint);
+        this.activePeer.setRemoteHost(this.passivePeer.ctrlBlock.srcEndpoint);
+        this.passivePeer.setRemoteHost(this.activePeer.ctrlBlock.srcEndpoint);
 
-        this._channel = new Channel(cfg.channel.lossPercent, cfg.channel.rtt, cfg.channel.variance);
+        this.channel = new Channel(cfg.channel.lossPercent, cfg.channel.rtt, cfg.channel.variance);
 
-        this._simulationClock.addObserver(this._activePeer);
-        this._simulationClock.addObserver(this._passivePeer);
+        this._simulationClock.addObserver(this.activePeer);
+        this._simulationClock.addObserver(this.passivePeer);
 
-        this._activePeer.logger = this._logger;
-        this._passivePeer.logger = this._logger;
-    }
+        this.activePeer.logger = this._logger;
+        this.passivePeer.logger = this._logger;
 
-    public getActivePeer(): Peer {
-        return this._activePeer;
-    }
-
-    public getPassivePeer(): Peer {
-        return this._passivePeer;
-    }
-
-    public getChannel(): Channel {
-        return this._channel;
+        this.linkPeers();
     }
 
     public linkPeers(): void {
-        this._activePeer.linkToNetwork(this._channel);
-        this._passivePeer.linkToNetwork(this._channel);
+        this.activePeer.linkToNetwork(this.channel);
+        this.passivePeer.linkToNetwork(this.channel);
 
-        this._channel.registerPeer(this._activePeer);
-        this._channel.registerPeer(this._passivePeer);
+        this.channel.registerPeer(this.activePeer);
+        this.channel.registerPeer(this.passivePeer);
     }
 
-
     public startSimulation(): Error|null {
-        const err = this._activePeer.prepareSendSegments();
+        const err = this.activePeer.prepareSendSegments();
         if (err !== null) {
             console.log("could not start simulation");
         }
@@ -86,7 +75,7 @@ export class Simulation {
     }
 
     public runNextStep(): boolean {
-        const elementsWithQueue: objectWithEventQueue[] = [this._activePeer, this._passivePeer, this._channel];
+        const elementsWithQueue: objectWithEventQueue[] = [this.activePeer, this.passivePeer, this.channel];
         const objectWithNextEvent: objectWithEventQueue|null = this.selectObjectWithLowestDate(elementsWithQueue);
         //console.log("runNextStep() - Events of selected peer: ", objectWithNextEvent?.events["_events"], "|||||");
 

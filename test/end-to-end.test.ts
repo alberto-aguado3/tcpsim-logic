@@ -43,8 +43,6 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
@@ -55,7 +53,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -97,8 +95,6 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
@@ -109,8 +105,8 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
-        expect(simulator["_activePeer"].application.getDataReceived()).toEqual(passiveCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator.activePeer.application.getDataReceived()).toEqual(passiveCfg.applicationData);
 
     });
 
@@ -152,8 +148,6 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
@@ -165,7 +159,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -207,8 +201,6 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
@@ -220,7 +212,7 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
 
     });
 
@@ -262,8 +254,6 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
@@ -274,8 +264,8 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
-        expect(simulator["_activePeer"].application.getDataReceived()).toEqual(passiveCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
+        expect(simulator.activePeer.application.getDataReceived()).toEqual(passiveCfg.applicationData);
 
     });
 
@@ -317,23 +307,21 @@ describe("end-to-end tests, ensuring data is transfered", () => {
 
         const simulator: Simulation = new Simulation(simCfg);
 
-        simulator.linkPeers();
-
         let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
             /*
-            let activePeer = simulator["_activePeer"];
-            let passivePeer = simulator["_passivePeer"];
+            let activePeer = simulator.activePeer;
+            let passivePeer = simulator.passivePeer;
             
             if (i >= 13 && i < 35) {
 
                 console.log("Iteration ", i, "\n",
                 //"Simulation time: ", simulator["_simulationClock"].simulationTime, "\n",
-                //"Active peer events: ", inspect(simulator["_activePeer"].events), "|| state: ", getNameOfState(simulator["_activePeer"].ctrlBlock.connState), `ip: ${activePeer.ctrlBlock.srcEndpoint.ip}`, "\n",
-                //"Passive peer events: ", inspect(simulator["_passivePeer"].events), "|| state: ", getNameOfState(simulator["_passivePeer"].ctrlBlock.connState), `ip: ${passivePeer.ctrlBlock.srcEndpoint.ip}`,"\n",
-                getNameOfState(simulator["_activePeer"].ctrlBlock.connState), `ip: ${activePeer.ctrlBlock.srcEndpoint.ip}`, getNameOfState(simulator["_passivePeer"].ctrlBlock.connState), `ip: ${passivePeer.ctrlBlock.srcEndpoint.ip}`,"\n",
+                //"Active peer events: ", inspect(simulator.activePeer.events), "|| state: ", getNameOfState(simulator.activePeer.ctrlBlock.connState), `ip: ${activePeer.ctrlBlock.srcEndpoint.ip}`, "\n",
+                //"Passive peer events: ", inspect(simulator.passivePeer.events), "|| state: ", getNameOfState(simulator.passivePeer.ctrlBlock.connState), `ip: ${passivePeer.ctrlBlock.srcEndpoint.ip}`,"\n",
+                getNameOfState(simulator.activePeer.ctrlBlock.connState), `ip: ${activePeer.ctrlBlock.srcEndpoint.ip}`, getNameOfState(simulator.passivePeer.ctrlBlock.connState), `ip: ${passivePeer.ctrlBlock.srcEndpoint.ip}`,"\n",
                 //"Channel events: ", inspect(simulator["_channel"].events), "\n",
                 //"Active peer block: ", inspect(activePeer.ctrlBlock), "\n",
                 //"Passive peer block: ", inspect(passivePeer.ctrlBlock), "\n",
@@ -357,8 +345,8 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             };
         }
 
-        expect(simulator["_passivePeer"].application.getDataReceived()).toEqual(activeCfg.applicationData);
-        //expect(simulator["_activePeer"].application.dataReceived).toEqual(passiveCfg.applicationData);
+        expect(simulator.passivePeer.application.getDataReceived()).toEqual(activeCfg.applicationData);
+        //expect(simulator.activePeer.application.dataReceived).toEqual(passiveCfg.applicationData);
 
     });
 

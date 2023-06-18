@@ -41,8 +41,8 @@ simulator.linkPeers();
 let isDone: boolean = false;
 while (!isDone) {
     isDone = simulator.runNextStep();
-    const activePeer = simulator["_activePeer"];
-    const passivePeer = simulator["_passivePeer"];
+    const activePeer = simulator["activePeer"];
+    const passivePeer = simulator["passivePeer"];
     console.log(`Active side: ${activePeer} | Passive side: ${passivePeer}`);
 }
 

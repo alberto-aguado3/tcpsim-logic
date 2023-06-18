@@ -8,6 +8,9 @@ export class Channel {
     public readonly rtt: number;
     private _channelVariance: number;
 
+    public readonly deliveredSegments: SegmentWithTimestamp[] = [];
+    public readonly lostSegments: SegmentWithTimestamp[] = [];
+
     public events: EventQueue = new EventQueue();
     private _peerRegistry: Map<Endpoint, Peer> = new Map<Endpoint, Peer>();
 
@@ -51,4 +54,37 @@ export class Channel {
         }
         return destPeer;
     }
+
+    public addLostSegment(segment: Segment, timestamp: Date): void {
+        const segmentWithDate: SegmentWithTimestamp = {
+            segment: segment,
+            date: timestamp,
+        };
+
+        this.sortedInsertByDate(segmentWithDate, this.lostSegments);
+    }
+
+    public addDeliveredSegment(segment: Segment, timestamp: Date): void {
+        const segmentWithDate: SegmentWithTimestamp = {
+            segment: segment,
+            date: timestamp,
+        };
+
+        this.sortedInsertByDate(segmentWithDate, this.deliveredSegments);
+    }
+
+    private sortedInsertByDate(newSegment: SegmentWithTimestamp, arr: SegmentWithTimestamp[]): void {
+        const index = arr.findIndex(segment => segment.date > newSegment.date);
+        if (index === -1) {
+            arr.push(newSegment);
+        } else {
+            arr.splice(index, 0, newSegment);
+        }
+    }
+
+}
+
+export type SegmentWithTimestamp = {
+    segment: Segment,
+    date: Date,
 }
