@@ -39,7 +39,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);
@@ -92,7 +96,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);
@@ -146,7 +154,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);
@@ -200,7 +212,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);
@@ -254,7 +270,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);
@@ -308,7 +328,11 @@ describe("end-to-end tests, ensuring data is transfered", () => {
             rtt: 2*1000, //2ms
         };
 
-        const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
+        const simCfg: SimConfig = {
+            active: activeCfg,
+            passive: passiveCfg,
+            channel: chanCfg
+        };
 
         const simulator: Simulation = new Simulation();
         simulator.loadConfig(simCfg);

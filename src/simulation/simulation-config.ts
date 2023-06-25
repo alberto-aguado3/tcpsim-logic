@@ -18,14 +18,8 @@ export type ChannelConfig = {
     variance?: number,
 }
 
-export class SimConfig {
-    public active: PeerConfig;
-    public passive: PeerConfig;
-    public channel: ChannelConfig;
-
-    constructor(activePeer: PeerConfig, passivePeer: PeerConfig, channel: ChannelConfig){
-        this.active = activePeer;
-        this.passive = passivePeer;
-        this.channel = channel;
-    }
+export type SimConfig =  {
+    active: PeerConfig
+    passive: PeerConfig
+    channel: ChannelConfig
 }
