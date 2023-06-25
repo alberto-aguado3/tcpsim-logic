@@ -22,4 +22,5 @@ export type SimConfig =  {
     active: PeerConfig
     passive: PeerConfig
     channel: ChannelConfig
+    [key: string]: any
 }
