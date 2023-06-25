@@ -1,6 +1,6 @@
 {
   "name": "tcpsim-logic",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Interface to tcp simulator logic",
   "exports": {
     ".": "./dist"
