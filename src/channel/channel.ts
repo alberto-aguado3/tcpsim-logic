@@ -4,10 +4,12 @@ import { Endpoint } from "../peer/endpoint";
 import { Segment } from "../segment";
 
 export class Channel {
+    //TODO: make channel observe (optional? field) simulation, and avoid passing timestamps in addCreatedSegment, moveToDelivered, moveToLost
     private _lossPercent: number;
     public readonly rtt: number;
     private _channelVariance: number;
 
+    public readonly wanderingSegments: SegmentWithTimestamp[] = [];
     public readonly deliveredSegments: SegmentWithTimestamp[] = [];
     public readonly lostSegments: SegmentWithTimestamp[] = [];
 
@@ -55,26 +57,44 @@ export class Channel {
         return destPeer;
     }
 
-    public addLostSegment(segment: Segment, timestamp: Date): void {
+
+    public addWanderingSegment(segment: Segment, timestamp: Date): void {
         const segmentWithDate: SegmentWithTimestamp = {
             segment: segment,
-            date: timestamp,
+            createdAt: timestamp,
+            updatedAt: timestamp
         };
 
-        this.sortedInsertByDate(segmentWithDate, this.lostSegments);
+        this.sortedInsertByDate(segmentWithDate, this.wanderingSegments);
     }
 
-    public addDeliveredSegment(segment: Segment, timestamp: Date): void {
-        const segmentWithDate: SegmentWithTimestamp = {
-            segment: segment,
-            date: timestamp,
-        };
+    public moveToDelivered(segmentId: string, timestamp: Date): boolean {
+        const deliveredSegment = this.findById(segmentId, this.wanderingSegments);
+        if (deliveredSegment === undefined) {
+            return false;
+        }
+        deliveredSegment.updatedAt = timestamp;
 
-        this.sortedInsertByDate(segmentWithDate, this.deliveredSegments);
+        this.deleteById(segmentId, this.wanderingSegments);
+        this.sortedInsertByDate(deliveredSegment, this.deliveredSegments);
+        return true;
+    }
+
+
+    public moveToLost(segmentId: string, timestamp: Date): boolean {
+        const wanderingSegment = this.findById(segmentId, this.wanderingSegments);
+        if (wanderingSegment === undefined) {
+            return false;
+        }
+        wanderingSegment.updatedAt = timestamp;
+
+        this.deleteById(segmentId, this.wanderingSegments);
+        this.sortedInsertByDate(wanderingSegment, this.lostSegments);
+        return true;
     }
 
     private sortedInsertByDate(newSegment: SegmentWithTimestamp, arr: SegmentWithTimestamp[]): void {
-        const index = arr.findIndex(segment => segment.date > newSegment.date);
+        const index = arr.findIndex(segment => segment.createdAt > newSegment.createdAt);
         if (index === -1) {
             arr.push(newSegment);
         } else {
@@ -82,9 +102,23 @@ export class Channel {
         }
     }
 
+    private deleteById(segmentId: string, arr: SegmentWithTimestamp[]): boolean {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].segment.id === segmentId) {
+                arr.splice(i, 1);
+                return true;
+            } 
+        }
+        return false;
+    }
+
+    private findById(segmentId: string, arr: SegmentWithTimestamp[]): SegmentWithTimestamp|undefined {
+        return arr.find((elem) => elem.segment.id === segmentId);
+    }
 }
 
 export type SegmentWithTimestamp = {
     segment: Segment,
-    date: Date,
+    createdAt: Date,
+    updatedAt: Date,
 }

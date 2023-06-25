@@ -30,7 +30,7 @@ export class Simulation {
         return this._channel;
     }
 
-    public linkPeers(): void {
+    private linkPeers(): void {
         this._activePeer.linkToNetwork(this._channel);
         this._passivePeer.linkToNetwork(this._channel);
 
@@ -38,13 +38,16 @@ export class Simulation {
         this._channel.registerPeer(this._passivePeer);
     }
 
-    public startSimulation(cfg: SimConfig): Error|null {
-        this.loadConfig(cfg);
+    public startSimulation(): Error|null {
+        if (!this._activePeer || !this._passivePeer || !this._channel) {
+            return new Error("Configuration needs to be passed first");
+        }
+
         this.linkPeers();
 
         const err = this._activePeer.prepareSendSegments();
         if (err !== null) {
-            console.log("could not start simulation");
+            console.log(`could not start simulation: ${err.message}`);
         }
 
         return err;
@@ -82,44 +85,44 @@ export class Simulation {
         return objectWithLowestDate;
     }
 
-    private loadConfig(cfg: SimConfig) {
+    public loadConfig(cfg: SimConfig) {
         let activePeerBuilder: PeerBuilder = new PeerBuilder().
-        setSourceAddr(cfg.active.endpoint).
-        setMss(cfg.active.mss).
-        setMsl(cfg.active.msl).
-        setMaxAnnounceableWindow(cfg.active.maxAnnounceableWindow).
-        setReceptionBufferCapacity(cfg.active.recvBuffCapacity).
-        setTimeToProcessSegment(cfg.active.timeToProcessSegment).
-        setTimeGuardBeforeTransmitting(cfg.active.timeGuardBeforeTransmitting);
-        this._activePeer = activePeerBuilder.buildActivePeer();
+            setSourceAddr(cfg.active.endpoint).
+            setMss(cfg.active.mss).
+            setMsl(cfg.active.msl).
+            setMaxAnnounceableWindow(cfg.active.maxAnnounceableWindow).
+            setReceptionBufferCapacity(cfg.active.recvBuffCapacity).
+            setTimeToProcessSegment(cfg.active.timeToProcessSegment).
+            setTimeGuardBeforeTransmitting(cfg.active.timeGuardBeforeTransmitting);
+            this._activePeer = activePeerBuilder.buildActivePeer();
 
-    let passivePeerBuilder: PeerBuilder = new PeerBuilder().
-        setSourceAddr(cfg.passive.endpoint).
-        setMss(cfg.passive.mss).
-        setMsl(cfg.passive.msl).
-        setMaxAnnounceableWindow(cfg.passive.maxAnnounceableWindow).
-        setReceptionBufferCapacity(cfg.passive.recvBuffCapacity).
-        setTimeToProcessSegment(cfg.passive.timeToProcessSegment).
-        setTimeGuardBeforeTransmitting(cfg.passive.timeGuardBeforeTransmitting);
-    this._passivePeer = passivePeerBuilder.buildPassivePeer();
+        let passivePeerBuilder: PeerBuilder = new PeerBuilder().
+            setSourceAddr(cfg.passive.endpoint).
+            setMss(cfg.passive.mss).
+            setMsl(cfg.passive.msl).
+            setMaxAnnounceableWindow(cfg.passive.maxAnnounceableWindow).
+            setReceptionBufferCapacity(cfg.passive.recvBuffCapacity).
+            setTimeToProcessSegment(cfg.passive.timeToProcessSegment).
+            setTimeGuardBeforeTransmitting(cfg.passive.timeGuardBeforeTransmitting);
+        this._passivePeer = passivePeerBuilder.buildPassivePeer();
 
-    if (cfg.active.applicationData !== undefined) {
-        this._activePeer.application.queueDataToSend(cfg.active.applicationData);
-    }
-    if (cfg.passive.applicationData !== undefined) {
-        this._passivePeer.application.queueDataToSend(cfg.passive.applicationData);
-    }
+        if (cfg.active.applicationData !== undefined) {
+            this._activePeer.application.queueDataToSend(cfg.active.applicationData);
+        }
+        if (cfg.passive.applicationData !== undefined) {
+            this._passivePeer.application.queueDataToSend(cfg.passive.applicationData);
+        }
 
-    this._activePeer.setRemoteHost(this._passivePeer.ctrlBlock.srcEndpoint);
-    this._passivePeer.setRemoteHost(this._activePeer.ctrlBlock.srcEndpoint);
+        this._activePeer.setRemoteHost(this._passivePeer.ctrlBlock.srcEndpoint);
+        this._passivePeer.setRemoteHost(this._activePeer.ctrlBlock.srcEndpoint);
 
-    this._channel = new Channel(cfg.channel.lossPercent, cfg.channel.rtt, cfg.channel.variance);
+        this._channel = new Channel(cfg.channel.lossPercent, cfg.channel.rtt, cfg.channel.variance);
 
-    this._simulationClock.addObserver(this._activePeer);
-    this._simulationClock.addObserver(this._passivePeer);
+        this._simulationClock.addObserver(this._activePeer);
+        this._simulationClock.addObserver(this._passivePeer);
 
-    this._activePeer.logger = this._logger;
-    this._passivePeer.logger = this._logger;
+        this._activePeer.logger = this._logger;
+        this._passivePeer.logger = this._logger;
     }
 }
 

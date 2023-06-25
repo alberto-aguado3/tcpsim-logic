@@ -42,8 +42,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
-
-        let err = simulator.startSimulation(simCfg);
+        simulator.loadConfig(simCfg);
+        
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
@@ -94,8 +95,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
+        simulator.loadConfig(simCfg);
 
-        let err = simulator.startSimulation(simCfg);
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
@@ -147,8 +149,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
+        simulator.loadConfig(simCfg);
 
-        let err = simulator.startSimulation(simCfg);
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
@@ -200,8 +203,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
+        simulator.loadConfig(simCfg);
 
-        let err = simulator.startSimulation(simCfg);
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
@@ -253,8 +257,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
+        simulator.loadConfig(simCfg);
 
-        let err = simulator.startSimulation(simCfg);
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
@@ -306,8 +311,9 @@ describe("end-to-end tests, ensuring data is transfered", () => {
         const simCfg: SimConfig = new SimConfig(activeCfg, passiveCfg, chanCfg);
 
         const simulator: Simulation = new Simulation();
+        simulator.loadConfig(simCfg);
 
-        let err = simulator.startSimulation(simCfg);
+        let err = simulator.startSimulation();
         expect(err).toBeNull();
 
         for (let i = 0; i < maxSteps; i++) {
