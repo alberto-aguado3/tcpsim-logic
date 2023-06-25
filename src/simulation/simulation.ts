@@ -70,6 +70,10 @@ export class Simulation {
         }
     }
 
+    public dropWanderingSegment(segmentId: string): boolean {
+        return this._channel.moveToLost(segmentId, this._simulationClock.simulationTime);
+    }
+
     private selectObjectWithLowestDate(objects: objectWithEventQueue[]): objectWithEventQueue|null {
         let lowestDate: Date|null = null;
         let objectWithLowestDate: objectWithEventQueue|null = null;
