@@ -30,14 +30,6 @@ export class Simulation {
         return this._channel;
     }
 
-    private linkPeers(): void {
-        this._activePeer.linkToNetwork(this._channel);
-        this._passivePeer.linkToNetwork(this._channel);
-
-        this._channel.registerPeer(this._activePeer);
-        this._channel.registerPeer(this._passivePeer);
-    }
-
     public startSimulation(): Error|null {
         if (!this._activePeer || !this._passivePeer || !this._channel) {
             return new Error("Configuration needs to be passed first");
@@ -72,6 +64,22 @@ export class Simulation {
 
     public dropWanderingSegment(segmentId: string): boolean {
         return this._channel.moveToLost(segmentId, this._simulationClock.simulationTime);
+    }
+
+    public getNextEventDate(): Date|null {
+        const objectWithNextEvent = this.selectObjectWithLowestDate([this._activePeer, this._passivePeer, this._channel]);
+        if (objectWithNextEvent === null) {
+            return null;
+        }
+        return objectWithNextEvent.events.peekNextEvent()!.executionTime;
+    }
+
+    private linkPeers(): void {
+        this._activePeer.linkToNetwork(this._channel);
+        this._passivePeer.linkToNetwork(this._channel);
+
+        this._channel.registerPeer(this._activePeer);
+        this._channel.registerPeer(this._passivePeer);
     }
 
     private selectObjectWithLowestDate(objects: objectWithEventQueue[]): objectWithEventQueue|null {
