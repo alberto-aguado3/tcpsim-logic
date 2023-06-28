@@ -8,9 +8,9 @@ import { SimConfig } from "./simulation-config";
 import { TimeNotifier } from "./time-notifier";
 
 export class Simulation {
-    private _activePeer!: Peer;
-    private _passivePeer!: Peer;
-    private _channel!: Channel;
+    private _activePeer?: Peer;
+    private _passivePeer?: Peer;
+    private _channel?: Channel;
     private _simulationClock: TimeNotifier = new TimeNotifier(new Date(0));
     private _logger: SimLogger = new SimLogger();
 
@@ -19,14 +19,23 @@ export class Simulation {
     }
 
     public get activePeer(): Peer {
+        if (!this._activePeer) {
+            throw new Error("Active peer was not defined");
+        }
         return this._activePeer;
     }
 
     public get passivePeer(): Peer {
+        if (!this._passivePeer) {
+            throw new Error("Passive peer was not defined");
+        }
         return this._passivePeer;
     }
 
     public get channel(): Channel {
+        if (!this._channel) {
+            throw new Error("Channel was not defined");
+        }
         return this._channel;
     }
 
@@ -46,7 +55,7 @@ export class Simulation {
     }
 
     public runNextStep(): boolean {
-        const elementsWithQueue: objectWithEventQueue[] = [this._activePeer, this._passivePeer, this._channel];
+        const elementsWithQueue: objectWithEventQueue[] = [this._activePeer!, this._passivePeer!, this._channel!];
         const objectWithNextEvent: objectWithEventQueue|null = this.selectObjectWithLowestDate(elementsWithQueue);
         //console.log("runNextStep() - Events of selected peer: ", objectWithNextEvent?.events["_events"], "|||||");
 
@@ -63,10 +72,14 @@ export class Simulation {
     }
 
     public dropWanderingSegment(segmentId: string): boolean {
-        return this._channel.moveToLost(segmentId, this._simulationClock.simulationTime);
+        return this._channel!.moveToLost(segmentId, this._simulationClock.simulationTime);
     }
 
     public getNextEventDate(): Date|null {
+        if (this._activePeer === undefined || this._passivePeer == undefined || this._channel == undefined) {
+            return null;
+        }
+
         const objectWithNextEvent = this.selectObjectWithLowestDate([this._activePeer, this._passivePeer, this._channel]);
         if (objectWithNextEvent === null) {
             return null;
@@ -75,11 +88,11 @@ export class Simulation {
     }
 
     private linkPeers(): void {
-        this._activePeer.linkToNetwork(this._channel);
-        this._passivePeer.linkToNetwork(this._channel);
+        this._activePeer!.linkToNetwork(this._channel!);
+        this._passivePeer!.linkToNetwork(this._channel!);
 
-        this._channel.registerPeer(this._activePeer);
-        this._channel.registerPeer(this._passivePeer);
+        this._channel!.registerPeer(this._activePeer!);
+        this._channel!.registerPeer(this._passivePeer!);
     }
 
     private selectObjectWithLowestDate(objects: objectWithEventQueue[]): objectWithEventQueue|null {
