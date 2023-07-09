@@ -220,8 +220,9 @@ export class Peer implements Observer{
         //TODO: revisar end
         //const end = this.ctrlBlock.sender.sndUna + this.ctrlBlock.sender.sndNxt;
         //const end = this.ctrlBlock.sender.sndNxt - this.ctrlBlock.sender.sndUna;
-        const windowBytes = this.ctrlBlock.sender.sndWnd;
-        let dataBetweenNxtAndWnd = this.sendBuffer.readChunk(start, windowBytes); //returned array discards empty cells, in case wnd>actualDataInBuffer
+        //const windowBytes = this.ctrlBlock.sender.sndWnd;
+        const distanceBetweenNxtAndWnd = (this.ctrlBlock.sender.sndUna + this.ctrlBlock.sender.sndWnd) - this.ctrlBlock.sender.sndNxt;
+        let dataBetweenNxtAndWnd = this.sendBuffer.readChunk(start, distanceBetweenNxtAndWnd); //returned array discards empty cells, in case wnd>actualDataInBuffer
 
         //const usableBytes = (this.ctrlBlock.sender.sndUna + this.ctrlBlock.sender.sndWnd) - this.ctrlBlock.sender.sndNxt;
         return Math.min(this._mss, dataBetweenNxtAndWnd.length);
