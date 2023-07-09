@@ -119,7 +119,8 @@ export class Simulation {
             setReceptionBufferCapacity(cfg.active.recvBuffCapacity).
             setTimeToProcessSegment(cfg.active.timeToProcessSegment).
             setTimeGuardBeforeTransmitting(cfg.active.timeGuardBeforeTransmitting);
-            this._activePeer = activePeerBuilder.buildActivePeer();
+        this._activePeer = activePeerBuilder.buildActivePeer();
+        this._activePeer.sendBuffer.capacity = cfg.passive.recvBuffCapacity===undefined ? 0 : cfg.passive.recvBuffCapacity;
 
         let passivePeerBuilder: PeerBuilder = new PeerBuilder().
             setSourceAddr(cfg.passive.endpoint).
@@ -130,6 +131,7 @@ export class Simulation {
             setTimeToProcessSegment(cfg.passive.timeToProcessSegment).
             setTimeGuardBeforeTransmitting(cfg.passive.timeGuardBeforeTransmitting);
         this._passivePeer = passivePeerBuilder.buildPassivePeer();
+        this._passivePeer.sendBuffer.capacity = cfg.active.recvBuffCapacity===undefined ? 0 : cfg.active.recvBuffCapacity;
 
         if (cfg.active.applicationData !== undefined) {
             this._activePeer.application.queueDataToSend(cfg.active.applicationData);

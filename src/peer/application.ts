@@ -4,6 +4,8 @@ export class Application {
     private _dataToSend: string = "";
     private _dataReceived: string = "";
 
+    //TODO: add port to differentiate between application ports
+
     constructor(){}
 
     public getDataToSend(): string {
