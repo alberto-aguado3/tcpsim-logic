@@ -43,7 +43,8 @@ export class StateSynSent extends State {
         //this.context.ctrlBlock.receiver.rcvNxt = segment.seqNumber+1;
         this.context.ctrlBlock.receiver.rcvNxt = segment.seqNumber;
 
-        this.context.sendBuffer.capacity = segment.window;
+        //This caused buffer to mismatch expected size (expecting opposed peer's rcvBuff capacity)
+        //this.context.sendBuffer.capacity = segment.window;
 
         //if (this.context.ctrlBlock.sender.sndUna == segment.ackNumber) {
         if (this.context.ctrlBlock.sender.sndUna < segment.ackNumber) {

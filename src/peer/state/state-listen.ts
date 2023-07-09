@@ -28,7 +28,8 @@ export class StateListen extends State {
             this.context.sendBuffer.setDataOffset(this.context.ctrlBlock.sender.iss+1);
         }
 
-        this.context.sendBuffer.capacity = segment.window;
+        //This caused buffer to mismatch expected size (expecting opposed peer's rcvBuff capacity)
+        //this.context.sendBuffer.capacity = segment.window;
 
         this.context.ctrlBlock.sender.sndUna = this.context.ctrlBlock.sender.iss+1;
         this.context.ctrlBlock.sender.sndNxt = this.context.ctrlBlock.sender.sndUna;
