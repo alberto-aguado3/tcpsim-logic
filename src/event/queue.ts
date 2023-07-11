@@ -1,4 +1,5 @@
 import { SimEventType, SimulationEvent } from "./event";
+import { EventReceive } from "./event-receive";
 
 
 export class EventQueue {
@@ -35,6 +36,12 @@ export class EventQueue {
                 i--;
             }
         }
+    }
+
+    public removeSegmentToReceiveById(id: string): void {
+        this._events.filter(event => {
+            return event.type() === SimEventType.RECEIVE && (event as EventReceive)["_segment"].id === id;
+        });
     }
 
     private sortByTime(): void {

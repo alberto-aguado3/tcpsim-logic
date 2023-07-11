@@ -90,6 +90,8 @@ export class Channel {
 
         this.deleteById(segmentId, this.wanderingSegments);
         this.sortedInsertByDate(wanderingSegment, this.lostSegments);
+
+        this.events.removeSegmentToReceiveById(segmentId);
         return true;
     }
 
