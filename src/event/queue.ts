@@ -40,7 +40,7 @@ export class EventQueue {
 
     public removeSegmentToReceiveById(id: string): void {
         this._events = this._events.filter(event => {
-            return event.type() === SimEventType.RECEIVE && (event as EventReceive)["_segment"].id === id;
+            return !(event.type() === SimEventType.RECEIVE && (event as EventReceive)["_segment"].id === id);
         });
     }
 
